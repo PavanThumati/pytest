@@ -1,18 +1,25 @@
 pipeline {
     agent any
- 
+
     environment {
         VENV = 'py_venv'
     }
- 
+
     stages {
+        stage('Clean Workspace') {
+            steps {
+                echo 'Cleaning workspace...'
+                deleteDir() // This clears the current workspace
+            }
+        }
+
         stage('Clone') {
             steps {
                 echo 'Pipeline started'
                 git branch: 'main', url: 'https://github.com/PavanThumati/pytest.git'
             }
         }
- 
+
         stage('Install the requirements') {
             steps {
                 sh '''
@@ -23,7 +30,7 @@ pipeline {
                 '''
             }
         }
- 
+
         stage('Run Tests') {
             steps {
                 sh '''
@@ -32,7 +39,7 @@ pipeline {
                 '''
             }
         }
- 
+
         stage('Generate coverage report') {
             steps {
                 sh '''
@@ -44,7 +51,7 @@ pipeline {
             }
         }
     }
- 
+
     post {
         always {
             archiveArtifacts artifacts: 'htmlcov/**', allowEmptyArchive: true
