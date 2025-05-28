@@ -9,7 +9,7 @@ pipeline {
         stage('Clone') {
             steps {
                 echo 'Pipeline started'
-                git branch: 'main', url: 'https://github.com/Bhargavkulla/pytest.git'
+                git branch: 'main', url: 'https://github.com/PavanThumati/pytest.git'
             }
         }
  
