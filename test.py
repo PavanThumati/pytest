@@ -1,7 +1,7 @@
-import app import add, substract
+from app import add, subtract
 
-def test_add(a,b):
-  assert add(2,3) == 5
+def test_add():
+  assert add(3,6) == 9
 
-def test_substract(a,b):
-  assert substract(3,2) == 1
+def test_subtract():
+  assert subtract(7,6) == 1
