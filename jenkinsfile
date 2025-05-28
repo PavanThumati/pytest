@@ -1,7 +1,7 @@
 pipeline{
   agent any
   environment{
-    venv=pytest_venv
+    venv='pytest_venv'
   }
   stages{
     stage('clone'){
