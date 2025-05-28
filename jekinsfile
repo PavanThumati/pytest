@@ -1,0 +1,50 @@
+pipeline{
+  agent any
+  environment{
+    venv=pytest_venv
+  }
+  stages{
+    stage('clone'){
+      steps{
+
+        git branch: 'main', url: 'https://github.com/PavanThumati/pytest.git'
+      }
+    }
+
+    stage('creating venv'){
+      steps{
+        sh '''
+          python -m venv $venv
+          . $venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          '''
+      }
+    }
+
+    stage('testing'){
+      steps{
+        sh '''
+                    . $VENV/bin/activate
+                    pytest
+           '''
+      }
+    }
+    stage('Generate coverage report') {
+            steps {
+                sh '''
+                    . $VENV/bin/activate
+                    coverage run -m pytest
+                    coverage report
+                    coverage html
+                '''
+            }
+        }
+    }
+ 
+    post {
+        always {
+            archiveArtifacts artifacts: 'htmlcov/**', allowEmptyArchive: true
+        }
+    }
+}
