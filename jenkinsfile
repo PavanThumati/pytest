@@ -25,6 +25,7 @@ pipeline {
                 sh '''
                     python3 -m venv $VENV
                     . $VENV/bin/activate
+                    
                     pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -35,6 +36,7 @@ pipeline {
             steps {
                 sh '''
                     . $VENV/bin/activate
+                    export PYTHONPATH=.
                     pytest
                 '''
             }
@@ -44,6 +46,7 @@ pipeline {
             steps {
                 sh '''
                     . $VENV/bin/activate
+                    export PYTHONPATH=.
                     coverage run -m pytest
                     coverage report
                     coverage html
