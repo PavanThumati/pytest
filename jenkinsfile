@@ -9,7 +9,7 @@ pipeline {
         stage('Clean Workspace') {
             steps {
                 echo 'Cleaning workspace...'
-                deleteDir() // This clears the current workspace
+                deleteDir()
             }
         }
 
@@ -23,13 +23,12 @@ pipeline {
         stage('Install the requirements') {
             steps {
                 sh '''
+                    set -e
                     python3 -m venv $VENV
                     . $VENV/bin/activate
-                    
+
                     pip install --upgrade pip
                     pip install -r requirements.txt
-                    pip install pytest
-                    pip install coverage
                 '''
             }
         }
@@ -37,6 +36,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
+                    set -e
                     . $VENV/bin/activate
                     export PYTHONPATH=.
                     pytest tests/
@@ -47,6 +47,7 @@ pipeline {
         stage('Generate coverage report') {
             steps {
                 sh '''
+                    set -e
                     . $VENV/bin/activate
                     export PYTHONPATH=.
                     coverage run -m pytest tests/
